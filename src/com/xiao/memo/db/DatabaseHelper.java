@@ -2,13 +2,12 @@ package com.xiao.memo.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	
+
 	private static final int DATABASE_VERSION = 1;
-	String DATABASE_CREATE = "create table record(_id INTEGER PRIMARY KEY AUTOINCREMENT,content varchar(8000),createTime varchar(200), expireTime varchar(200), isAlarm INTEGER)";
+	String DATABASE_CREATE = "create table record(_id INTEGER PRIMARY KEY AUTOINCREMENT,content varchar(8000),createTime varchar(200), expireTime varchar(200), isAlarm INTEGER, isOld INTEGER)";
 
 	public DatabaseHelper(Context context, String name) {
 		super(context, name, null, DATABASE_VERSION);

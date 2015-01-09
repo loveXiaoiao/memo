@@ -10,9 +10,17 @@ public class Record {
 	private Date createTime;
 	//执行时间（过期时间）
 	private Date expireTime;
-	//是否设置闹钟
+	//是否设置闹钟 0为不设置，1为设置
 	private Integer isAlarm;
+	//是否过时，默认为0（未过时），1为已过时
+	private Integer isOld;
 	
+	public Integer getIsOld() {
+		return isOld;
+	}
+	public void setIsOld(Integer isOld) {
+		this.isOld = isOld;
+	}
 	public Integer getId() {
 		return id;
 	}
