@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.xiao.memo.entiy.Record;
-import com.xiao.memo.util.TimeUtil;
 
 public class RecordDao {
 	DatabaseHelper dbHelper;

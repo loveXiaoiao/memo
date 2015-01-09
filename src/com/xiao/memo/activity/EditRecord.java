@@ -128,7 +128,6 @@ public class EditRecord extends Activity {
 					if (expireTime.getTime() < currentTime.getTime()) {
 						Toast.makeText(EditRecord.this, "",Toast.LENGTH_SHORT).show();
 					} else {
-//						addData(mtext, mtime, isAlarm);
 						record.setContent(mtext);
 						record.setCreateTime(mCalendar.get(Calendar.YEAR)+"年"+(mCalendar.get(Calendar.MONTH)+1)+"月"+mCalendar.get(Calendar.DAY_OF_MONTH)+"日"
 								+mCalendar.get(Calendar.HOUR_OF_DAY)+"时"+mCalendar.get(Calendar.MINUTE)+"分");
@@ -163,6 +162,6 @@ public class EditRecord extends Activity {
 				}
 			});
 		}
-	}
 
+}
 }
