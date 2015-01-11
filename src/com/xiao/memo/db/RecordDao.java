@@ -35,6 +35,7 @@ public class RecordDao {
 			record.setIsOld(Integer.parseInt(cursor.getString(cursor.getColumnIndex("isOld"))));
 			records.add(record);
 		}
+		db.close();
 		return records;
 	}
 	
@@ -49,7 +50,6 @@ public class RecordDao {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		db.insert("record", null, cv);
 		db.close();
-		
 	}
 
 }

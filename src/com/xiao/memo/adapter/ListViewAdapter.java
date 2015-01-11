@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -22,6 +23,11 @@ public class ListViewAdapter extends BaseAdapter {
 	public ListViewAdapter(Context context, List<Record> records) {
 		this.context = context;
 		if (records != null) this.records = records;
+	}
+	
+	public void addItem(Record record){
+		this.records.add(record);
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -53,6 +59,7 @@ public class ListViewAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.content = (TextView) convertView.findViewById(R.id.itemTitle);
 			holder.expireTime = (TextView) convertView.findViewById(R.id.itemText);
+			holder.contactAvatar = (ImageView) convertView.findViewById(R.id.itemImage);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -60,11 +67,13 @@ public class ListViewAdapter extends BaseAdapter {
 		Record record = records.get(position);
 		holder.content.setText(record.getContent());
 		holder.expireTime.setText(TimeUtil.parseToString(TimeUtil.parseToDate(record.getExpireTime())));
+		holder.contactAvatar.setImageResource(R.drawable.item);
 		return convertView;
 	}
 	private class ViewHolder {
 		public TextView content;
 		public TextView expireTime;
+		public ImageView contactAvatar;
 	}
 
 }

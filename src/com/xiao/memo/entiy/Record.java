@@ -1,6 +1,5 @@
 package com.xiao.memo.entiy;
 
-import java.util.Date;
 
 public class Record {
 	private Integer id;
