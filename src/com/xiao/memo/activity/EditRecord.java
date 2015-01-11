@@ -6,10 +6,14 @@ import java.util.Date;
 import com.xiao.memo.R;
 import com.xiao.memo.db.RecordDao;
 import com.xiao.memo.entiy.Record;
+import com.xiao.memo.receiver.AlarmReceiver;
 import com.xiao.memo.util.TimeUtil;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,17 +41,21 @@ public class EditRecord extends Activity {
 	private int year, month, day, hour, minute;
 	private Integer isAlarm = 0;//是否设置闹钟
 	private String click_key = "";
-	private Record record;
+	private long alarm_id = 0;
+	private AlarmManager mAlarm;
+	Bundle bundle = new Bundle();
+	private Record record = new Record();
+	RecordDao recordDao = new RecordDao(EditRecord.this);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mCalendar = Calendar.getInstance();
-//		year = mCalendar.get(Calendar.YEAR);
-//		month = mCalendar.get(Calendar.MONTH);
-//		day = mCalendar.get(Calendar.DAY_OF_MONTH);
-//		hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-//		minute = mCalendar.get(Calendar.MINUTE);
+		year = mCalendar.get(Calendar.YEAR);
+		month = mCalendar.get(Calendar.MONTH);
+		day = mCalendar.get(Calendar.DAY_OF_MONTH);
+		hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+		minute = mCalendar.get(Calendar.MINUTE);
 		Intent intent = getIntent();
 		click_key = intent.getStringExtra("click_key");
 		if (click_key.equals("click_add")) {
@@ -60,6 +68,7 @@ public class EditRecord extends Activity {
 			discardBtn = (Button) findViewById(R.id.discard);
 			dateBtn.setText(mCalendar.get(Calendar.YEAR)+"年"+(mCalendar.get(Calendar.MONTH)+1)+"月"+mCalendar.get(Calendar.DAY_OF_MONTH)+"日");
 			timeBtn.setText(mCalendar.get(Calendar.HOUR_OF_DAY)+"时"+mCalendar.get(Calendar.MINUTE)+"分");
+			mAlarmCalendar = Calendar.getInstance();
 			dateBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -126,7 +135,7 @@ public class EditRecord extends Activity {
 					expireTime = TimeUtil.parseToDate(mtime);
 					currentTime = new Date();
 					if (expireTime.getTime() < currentTime.getTime()) {
-						Toast.makeText(EditRecord.this, "",Toast.LENGTH_SHORT).show();
+						Toast.makeText(EditRecord.this, "设置时间必须大于当前时间！",Toast.LENGTH_SHORT).show();
 					} else {
 						record.setContent(mtext);
 						record.setCreateTime(mCalendar.get(Calendar.YEAR)+"年"+(mCalendar.get(Calendar.MONTH)+1)+"月"+mCalendar.get(Calendar.DAY_OF_MONTH)+"日"
@@ -134,21 +143,24 @@ public class EditRecord extends Activity {
 						record.setExpireTime(mtime);
 						record.setIsAlarm(isAlarm);
 						record.setIsOld(0);
-						new RecordDao(EditRecord.this).saveRecord(record);
+						alarm_id = recordDao.saveRecord(record);
 						if (isAlarm == 1) {
 							//设置闹钟
-							/*
 							mAlarm = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
 							Intent intent = new Intent(EditRecord.this,AlarmReceiver.class);
-							PendingIntent pendingIntent = PendingIntent.getBroadcast(EditRecord.this,(int) alarm_id, intent, 0);//
-							mAlarm.set(AlarmManager.RTC_WAKEUP,
-									mAlarmCalendar.getTimeInMillis(),
-									pendingIntent);
-									*/
+							intent.putExtra("record_id", alarm_id);
+							PendingIntent pendingIntent = PendingIntent.getBroadcast(EditRecord.this,(int) alarm_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+							mAlarm.set(AlarmManager.RTC_WAKEUP,mAlarmCalendar.getTimeInMillis(),pendingIntent);
 						}
 //						Intent mWidgetIntent = new Intent();
 //						mWidgetIntent.setAction("com.ideal.note.widget");
 //						EditRecord.this.sendBroadcast(mWidgetIntent);
+						
+						Intent aintent = new Intent(EditRecord.this, MainActivity.class);
+						bundle.putString("content", mtext);
+						bundle.putString("expireTime", mtime);
+						aintent.putExtras(bundle);
+						setResult(RESULT_OK, aintent);
 						finish();
 					}
 
