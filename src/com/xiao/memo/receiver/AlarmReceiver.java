@@ -12,8 +12,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		Log.i("getResultCode", getResultCode()+"");
+		String id = intent.getStringExtra("record_id");
+		Log.i("record_id", id);
 		Intent i = new Intent(context, Alarm.class);
+		i.putExtra("record_id", id);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//这一句很重要，不然会出错
 		context.startActivity(i);
 	}

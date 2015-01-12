@@ -31,5 +31,14 @@ public class TimeUtil {
 				+ (minuteTemp + 1)+" 分";
 		return Cursortime;
 	}
+	
+	//获取天数
+	public static long getDays(Date date){
+		long days = 0;
+		Date currentTime = new Date();
+		long interval = (date.getTime() - currentTime.getTime()) / 1000;// 秒
+		days = interval / (24 * 3600);// 天
+		return days;
+	}
 
 }

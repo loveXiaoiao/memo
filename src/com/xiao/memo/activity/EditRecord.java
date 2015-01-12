@@ -148,13 +148,13 @@ public class EditRecord extends Activity {
 							//设置闹钟
 							mAlarm = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
 							Intent intent = new Intent(EditRecord.this,AlarmReceiver.class);
-							intent.putExtra("record_id", alarm_id);
+							intent.putExtra("record_id", String.valueOf(alarm_id));
 							PendingIntent pendingIntent = PendingIntent.getBroadcast(EditRecord.this,(int) alarm_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 							mAlarm.set(AlarmManager.RTC_WAKEUP,mAlarmCalendar.getTimeInMillis(),pendingIntent);
 						}
-//						Intent mWidgetIntent = new Intent();
-//						mWidgetIntent.setAction("com.ideal.note.widget");
-//						EditRecord.this.sendBroadcast(mWidgetIntent);
+						Intent mWidgetIntent = new Intent();
+						mWidgetIntent.setAction("com.xiao.memo.widget");
+						EditRecord.this.sendBroadcast(mWidgetIntent);
 						Intent aintent = new Intent(EditRecord.this, MainActivity.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("content", mtext);

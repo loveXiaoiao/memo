@@ -34,7 +34,7 @@ public class Alarm extends Activity {
 		Intent intentSV = new Intent(Alarm.this, AlarmService.class);
 		startService(intentSV);
 		Intent intent = getIntent();
-		id = String.valueOf(intent.getIntExtra("record_id", 0));
+		id = intent.getStringExtra("record_id");
 		records = recordDao.getRecordList(null, "_id=?", new String[] { id }, null);
 		Record record = new Record();
 		if(records.size() > 0){
