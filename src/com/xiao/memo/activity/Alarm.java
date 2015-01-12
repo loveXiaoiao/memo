@@ -45,7 +45,7 @@ public class Alarm extends Activity {
 		}
 		new AlertDialog.Builder(Alarm.this)
 		.setIcon(R.drawable.bell)
-		.setTitle("该啦！")
+		.setTitle("有事情要做了！")
 		.setMessage(mtext)
 		.setPositiveButton("完成",
 				new DialogInterface.OnClickListener() {

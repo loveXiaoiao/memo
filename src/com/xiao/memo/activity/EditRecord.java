@@ -155,8 +155,8 @@ public class EditRecord extends Activity {
 //						Intent mWidgetIntent = new Intent();
 //						mWidgetIntent.setAction("com.ideal.note.widget");
 //						EditRecord.this.sendBroadcast(mWidgetIntent);
-						
 						Intent aintent = new Intent(EditRecord.this, MainActivity.class);
+						Bundle bundle = new Bundle();
 						bundle.putString("content", mtext);
 						bundle.putString("expireTime", mtime);
 						aintent.putExtras(bundle);
