@@ -46,21 +46,16 @@ public class Alarm extends Activity {
 			// 播放闹铃
 			Intent intentSV = new Intent(Alarm.this, AlarmService.class);
 			startService(intentSV);
-			new AlertDialog.Builder(Alarm.this)
-			.setIcon(R.drawable.bell)
-			.setTitle("有事情要做了！")
-			.setMessage(mtext)
+			new AlertDialog.Builder(Alarm.this).setIcon(R.drawable.bell).setTitle("有事情要做了！").setMessage(mtext)
 			.setPositiveButton("完成",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,
-						int whichButton) {
+					new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog,int whichButton) {
 					//关闭闹铃声
 					Intent intentSV = new Intent(Alarm.this, AlarmService.class);
 					stopService(intentSV);
+					Alarm.this.finish();
 				}
 			}).show();
 		}
-		Alarm.this.finish();
 		//更新桌面widget	
 		Intent mWidgetIntent = new Intent();
 		mWidgetIntent.setAction("com.xiao.memo.widget");

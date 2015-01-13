@@ -25,7 +25,9 @@ public class AppWidget extends AppWidgetProvider {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		List<Record> records= new RecordDao(context).getRecordList(null, "isOld=?", new String[] { "0" }, "expireTime asc");
 		desk_text = new String[3];
-		for(int i=0;i<3;i++){
+		for(int i=0;i<records.size();i++){
+			if(i == 3)
+				break;
 			if(records.get(i) != null){
 				String temp = records.get(i).getContent();
 				if(temp.length() > 15){
@@ -60,8 +62,10 @@ public class AppWidget extends AppWidgetProvider {
 		if(intent.getAction().equals("com.xiao.memo.widget")){
 			List<Record> records= new RecordDao(context).getRecordList(null, "isOld=?", new String[] { "0" }, "expireTime asc");
 			desk_text = new String[3];
-			for(int i=0;i<3;i++){
+			for(int i=0;i<records.size();i++){
 				if(records.get(i) != null){
+					if(i == 3)
+						break;
 					String temp = records.get(i).getContent();
 					if(temp.length() > 15){
 						temp = temp.substring(0, 15) + "...";
