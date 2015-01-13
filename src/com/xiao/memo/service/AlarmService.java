@@ -35,12 +35,11 @@ public class AlarmService extends Service {
 		mp.start();
 		// 音乐播放完毕的事件处理
 		mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
 			public void onCompletion(MediaPlayer mp) {
 				// TODO Auto-generated method stub
 				// 循环播放
 				try {
-					//mp.start();
+					mp.start();
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

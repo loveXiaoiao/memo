@@ -14,6 +14,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 public class AppWidget extends AppWidgetProvider {
@@ -21,33 +22,29 @@ public class AppWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		// TODO Auto-generated method stub
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		List<Record> records= new RecordDao(context).getRecordList(null, "isOld=?", new String[] { "0" }, "expireTime asc");
-		desk_text = new String[6];
-		for(int i=0;i<6;i++){
+		desk_text = new String[3];
+		for(int i=0;i<3;i++){
 			if(records.get(i) != null){
-				desk_text[i] = records.get(i).getContent() + "...     "+ getDaysString(records.get(i).getExpireTime());
+				String temp = records.get(i).getContent();
+				if(temp.length() > 15){
+					temp = temp.substring(0, 15) + "...";
+				}
+				desk_text[i] = temp + "\n"+ getDaysString(records.get(i).getExpireTime());
+				Log.i("dest_top", desk_text[i]);
 			}
 		}
 		final int Num = appWidgetIds.length;
 		for (int i = 0; i < Num; i++) {
-			/*int[] mAppWidgetId = appWidgetIds;
-			RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(),R.layout.widget);
-			mRemoteViews.setTextViewText(R.id.desktop_text, array_to_string(desk_text));
-			Intent clickIntent = new Intent(context, MainActivity.class);
-			PendingIntent pdIntent = PendingIntent.getActivity(context, 0,clickIntent, 0);
-			mRemoteViews.setOnClickPendingIntent(R.id.widget_layout, pdIntent);
-			appWidgetManager.updateAppWidget(mAppWidgetId, mRemoteViews); */
 			 int appWidgetId = appWidgetIds[i];
-			 
 		      // Create an Intent to launch ExampleActivity
 		      Intent intent = new Intent(context, MainActivity.class);
 		      PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		 
 		      // Get the layout for the App Widget and attach an on-click listener
 		      // to the button
 		      RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+		      views.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
 		      // To update a label
 		      views.setTextViewText(R.id.desktop_text, array_to_string(desk_text));
 		      // Tell the AppWidgetManager to perform an update on the current app
@@ -62,10 +59,14 @@ public class AppWidget extends AppWidgetProvider {
 		super.onReceive(context, intent);
 		if(intent.getAction().equals("com.xiao.memo.widget")){
 			List<Record> records= new RecordDao(context).getRecordList(null, "isOld=?", new String[] { "0" }, "expireTime asc");
-			desk_text = new String[6];
-			for(int i=0;i<6;i++){
+			desk_text = new String[3];
+			for(int i=0;i<3;i++){
 				if(records.get(i) != null){
-					desk_text[i] = records.get(i).getContent().substring(0, 5) + "     "+ getDaysString(records.get(i).getExpireTime());
+					String temp = records.get(i).getContent();
+					if(temp.length() > 15){
+						temp = temp.substring(0, 15) + "...";
+					}
+					desk_text[i] = temp + "\n"+ getDaysString(records.get(i).getExpireTime());
 				}
 			}
 			RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);

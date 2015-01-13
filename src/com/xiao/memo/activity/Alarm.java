@@ -20,6 +20,7 @@ public class Alarm extends Activity {
 	String mtime = "";
 	String mtext = "";
 	String id = "";
+	int isalarm = 0;
 	RecordDao recordDao = new RecordDao(Alarm.this);
 	
 	@Override
@@ -30,9 +31,6 @@ public class Alarm extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		// 播放闹铃
-		Intent intentSV = new Intent(Alarm.this, AlarmService.class);
-		startService(intentSV);
 		Intent intent = getIntent();
 		id = intent.getStringExtra("record_id");
 		records = recordDao.getRecordList(null, "_id=?", new String[] { id }, null);
@@ -42,25 +40,31 @@ public class Alarm extends Activity {
 			record = records.get(0);
 			record.setIsOld(1);
 			recordDao.updateRecord(record);
+			isalarm = records.get(0).getIsAlarm();
 		}
-		new AlertDialog.Builder(Alarm.this)
-		.setIcon(R.drawable.bell)
-		.setTitle("有事情要做了！")
-		.setMessage(mtext)
-		.setPositiveButton("完成",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int whichButton) {
-						//关闭闹铃声
-						Intent intentSV = new Intent(Alarm.this, AlarmService.class);
-						stopService(intentSV);
-						//更新桌面widget	
-//						Intent mWidgetIntent = new Intent();
-//						mWidgetIntent.setAction("com.ideal.note.widget");
-//						Alarm.this.sendBroadcast(mWidgetIntent);
-						Alarm.this.finish();
-					}
-				}).show();
+		if(isalarm == 1){
+			// 播放闹铃
+			Intent intentSV = new Intent(Alarm.this, AlarmService.class);
+			startService(intentSV);
+			new AlertDialog.Builder(Alarm.this)
+			.setIcon(R.drawable.bell)
+			.setTitle("有事情要做了！")
+			.setMessage(mtext)
+			.setPositiveButton("完成",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,
+						int whichButton) {
+					//关闭闹铃声
+					Intent intentSV = new Intent(Alarm.this, AlarmService.class);
+					stopService(intentSV);
+				}
+			}).show();
+		}
+		Alarm.this.finish();
+		//更新桌面widget	
+		Intent mWidgetIntent = new Intent();
+		mWidgetIntent.setAction("com.xiao.memo.widget");
+		Alarm.this.sendBroadcast(mWidgetIntent);
 	}
 	// 返回键时回到主Acitvity
 	@Override

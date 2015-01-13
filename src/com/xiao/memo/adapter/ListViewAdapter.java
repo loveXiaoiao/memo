@@ -29,6 +29,11 @@ public class ListViewAdapter extends BaseAdapter {
 		this.records.add(record);
 		notifyDataSetChanged();
 	}
+	
+	public void removeItem(int location){
+		this.records.remove(location);
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public int getCount() {

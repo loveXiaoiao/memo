@@ -144,14 +144,14 @@ public class EditRecord extends Activity {
 						record.setIsAlarm(isAlarm);
 						record.setIsOld(0);
 						alarm_id = recordDao.saveRecord(record);
-						if (isAlarm == 1) {
-							//设置闹钟
-							mAlarm = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-							Intent intent = new Intent(EditRecord.this,AlarmReceiver.class);
-							intent.putExtra("record_id", String.valueOf(alarm_id));
-							PendingIntent pendingIntent = PendingIntent.getBroadcast(EditRecord.this,(int) alarm_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-							mAlarm.set(AlarmManager.RTC_WAKEUP,mAlarmCalendar.getTimeInMillis(),pendingIntent);
-						}
+//						if (isAlarm == 1) {
+						// 设置闹钟
+						mAlarm = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+						Intent intent = new Intent(EditRecord.this,AlarmReceiver.class);
+						intent.putExtra("record_id", String.valueOf(alarm_id));
+						PendingIntent pendingIntent = PendingIntent.getBroadcast(EditRecord.this, (int) alarm_id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+						mAlarm.set(AlarmManager.RTC_WAKEUP,mAlarmCalendar.getTimeInMillis(),pendingIntent);
+//						}
 						Intent mWidgetIntent = new Intent();
 						mWidgetIntent.setAction("com.xiao.memo.widget");
 						EditRecord.this.sendBroadcast(mWidgetIntent);

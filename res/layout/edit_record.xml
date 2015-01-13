@@ -38,8 +38,6 @@
         android:orientation="horizontal"
         android:layout_gravity="center" >
 
-        
-
         <CheckBox
             android:id="@+id/isAlarm"
             android:layout_width="wrap_content"
