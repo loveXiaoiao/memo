@@ -67,7 +67,7 @@ public class BootAlarm extends Activity {
 		//开启启动程序
 //		Intent intent = new Intent(BootAlarm.this, MainActivity.class);
 //		startActivity(intent);
-//		BootAlarm.this.finish();
+		BootAlarm.this.finish();
 	}
 
 }

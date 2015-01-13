@@ -55,6 +55,8 @@ public class Alarm extends Activity {
 					Alarm.this.finish();
 				}
 			}).show();
+		}else{
+			Alarm.this.finish();
 		}
 		//更新桌面widget	
 		Intent mWidgetIntent = new Intent();
