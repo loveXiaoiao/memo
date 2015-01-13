@@ -42,6 +42,10 @@ public class Alarm extends Activity {
 			recordDao.updateRecord(record);
 			isalarm = records.get(0).getIsAlarm();
 		}
+		//更新桌面widget	
+		Intent mWidgetIntent = new Intent();
+		mWidgetIntent.setAction("com.xiao.memo.widget");
+		Alarm.this.sendBroadcast(mWidgetIntent);
 		if(isalarm == 1){
 			// 播放闹铃
 			Intent intentSV = new Intent(Alarm.this, AlarmService.class);
@@ -58,10 +62,7 @@ public class Alarm extends Activity {
 		}else{
 			Alarm.this.finish();
 		}
-		//更新桌面widget	
-		Intent mWidgetIntent = new Intent();
-		mWidgetIntent.setAction("com.xiao.memo.widget");
-		Alarm.this.sendBroadcast(mWidgetIntent);
+		
 	}
 	// 返回键时回到主Acitvity
 	@Override
