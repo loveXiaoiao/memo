@@ -16,6 +16,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class BootAlarm extends Activity {
 	private List<Record> records = new ArrayList<Record>();
@@ -38,19 +39,23 @@ public class BootAlarm extends Activity {
 			if (expireTime.getTime() > currentTime.getTime()) {
 				alarm_id = re.getId();
 				mAlarmCalendar = Calendar.getInstance();
-				time = re.getExpireTime();
+				expireTime = TimeUtil.parseToDate(re.getExpireTime());
+				mAlarmCalendar.setTime(expireTime);
+				/*
 				myear = Integer.valueOf(time.substring(0, time.indexOf("年"))).intValue();
 				mmonth = Integer.valueOf(time.substring(time.indexOf("年") + 1, time.indexOf("月"))).intValue() - 1;
 				mday = Integer.valueOf(time.substring(time.indexOf("月") + 1, time.indexOf("日"))).intValue();
 				mhour = Integer.valueOf(time.substring(time.indexOf("日") + 1, time.indexOf("时"))).intValue();
 				mminute = Integer.valueOf(time.substring(time.indexOf("时") + 1,time.indexOf("分"))).intValue();
-				mAlarmCalendar.set(Calendar.YEAR, myear);
-				mAlarmCalendar.set(Calendar.MONTH, mmonth);
-				mAlarmCalendar.set(Calendar.DAY_OF_MONTH, mday);
-				mAlarmCalendar.set(Calendar.HOUR_OF_DAY, mhour);
-				mAlarmCalendar.set(Calendar.MINUTE, mminute);
+				*/
+				mAlarmCalendar.set(Calendar.YEAR, mAlarmCalendar.get(Calendar.YEAR));
+				mAlarmCalendar.set(Calendar.MONTH, mAlarmCalendar.get(Calendar.MONTH));
+				mAlarmCalendar.set(Calendar.DAY_OF_MONTH, mAlarmCalendar.get(Calendar.DAY_OF_MONTH));
+				mAlarmCalendar.set(Calendar.HOUR_OF_DAY, mAlarmCalendar.get(Calendar.HOUR_OF_DAY));
+				mAlarmCalendar.set(Calendar.MINUTE, mAlarmCalendar.get(Calendar.MINUTE));
 				mAlarmCalendar.set(Calendar.SECOND, 0);
 				mAlarmCalendar.set(Calendar.MILLISECOND, 0);
+				Log.i("mAlarmCalendar", mAlarmCalendar.get(Calendar.YEAR) +" "+ mAlarmCalendar.get(Calendar.MONTH) +" "+mAlarmCalendar.get(Calendar.DAY_OF_MONTH)+" "+mAlarmCalendar.get(Calendar.HOUR_OF_DAY) );
 				mAlarm = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
 				Intent intent = new Intent(BootAlarm.this,AlarmReceiver.class);
 				intent.putExtra("record_id", String.valueOf(alarm_id));

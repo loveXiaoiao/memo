@@ -43,14 +43,12 @@ public class AppWidget extends AppWidgetProvider {
 		      // Create an Intent to launch ExampleActivity
 		      Intent intent = new Intent(context, MainActivity.class);
 		      PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		      // Get the layout for the App Widget and attach an on-click listener
-		      // to the button
+		      // Get the layout for the App Widget and attach an on-click listener to the button
 		      RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
 		      views.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
 		      // To update a label
 		      views.setTextViewText(R.id.desktop_text, array_to_string(desk_text));
-		      // Tell the AppWidgetManager to perform an update on the current app
-		      // widget
+		      // Tell the AppWidgetManager to perform an update on the current app widget
 		      appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
